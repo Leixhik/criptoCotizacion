@@ -21,6 +21,15 @@
       .then(({Data}) => criptomonedas.value = Data)
   })
 
+  const cotizarCripto = () => {
+    // Validar que cotizar esté lleno
+    if (Object.valuesñ(cotizar).includes('')) {
+      console.log('Todos los campos son obligatorios')
+      return
+    }
+
+    console.log('Cotizando...')
+  }
 
 </script>
 
@@ -30,7 +39,11 @@
 
     <div class="contenido">
 
-        <form class="formulario">
+        <form
+          class="formulario"
+          @submit.prevent="cotizarCripto"
+
+        >
           <div class="campo">
             <label class="moneda">Moneda:</label>
             <select
@@ -59,7 +72,7 @@
             </select>
           </div>
 
-          <input type="submit" value="C0otizar" />
+          <input type="submit" value="Cotizar" />
 
         </form>
     </div>
