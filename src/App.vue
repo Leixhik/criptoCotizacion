@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted } from "vue";
+  import { ref, reactive, onMounted } from "vue";
   const monedas = ref([
       { codigo: 'USD', texto: 'Dolar de Estados Unidos'},
       { codigo: 'MXN', texto: 'Peso Mexicano'},
@@ -8,6 +8,11 @@
   ])
 
   const criptomonedas = ref([])
+
+  const cotizar = reactive({
+    moneda: '',
+    criptomoneda: ''
+  })
 
   onMounted(() => {
     const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD'
@@ -21,14 +26,17 @@
 
 <template>
   <div class="contenedor">
-    <h1 class="titulo">Cotizador de <span>Críptomonedas</span></h1>
+    <h1 class="titulo">Cotizador de <span>Criptomonedas</span></h1>
 
     <div class="contenido">
 
         <form class="formulario">
           <div class="campo">
             <label class="moneda">Moneda:</label>
-            <select id="moneda">
+            <select
+              id="moneda"
+              v-model="cotizar.moneda"
+            >
               <option value=""> -- Selecciona --</option>
               <option
                 v-for="moneda in monedas"
@@ -36,6 +44,23 @@
               >{{ moneda.texto }}</option>
             </select>
           </div>
+
+          <div class="campo">
+            <label class="cripto">Criptomoneda:</label>
+            <select
+              id="cripto"
+              v-model="cotizar.criptomoneda"
+            >
+              <option value=""> -- Selecciona --</option>
+              <option
+                v-for="criptomoneda in criptomonedas"
+                :value="criptomoneda.CoinInfo.Name"
+              >{{ criptomoneda.CoinInfo.FullName }}</option>
+            </select>
+          </div>
+
+          <input type="submit" value="C0otizar" />
+
         </form>
     </div>
 
