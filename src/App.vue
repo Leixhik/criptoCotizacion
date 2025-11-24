@@ -1,5 +1,7 @@
 <script setup>
   import { ref, reactive, onMounted } from "vue";
+  import Alerta from "./components/Alerta.vue";
+
   const monedas = ref([
       { codigo: 'USD', texto: 'Dolar de Estados Unidos'},
       { codigo: 'MXN', texto: 'Peso Mexicano'},
@@ -8,6 +10,7 @@
   ])
 
   const criptomonedas = ref([])
+  const error = ref('')
 
   const cotizar = reactive({
     moneda: '',
@@ -23,12 +26,22 @@
 
   const cotizarCripto = () => {
     // Validar que cotizar esté lleno
-    if (Object.valuesñ(cotizar).includes('')) {
-      console.log('Todos los campos son obligatorios')
+    if (Object.values(cotizar).includes('')) {
+      error.value = 'Todos los campos son obligatorios'
       return
     }
+    error.value = ''
+    obtenerCotizacion()
+  }
 
-    console.log('Cotizando...')
+  const obtenerCotizacion = async () => {
+    const { moneda, criptomoneda } = cotizar
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`
+
+    const respuesta = await fetch(url)
+    const data = await respuesta.json()
+
+    console.log(data)
   }
 
 </script>
@@ -38,6 +51,9 @@
     <h1 class="titulo">Cotizador de <span>Criptomonedas</span></h1>
 
     <div class="contenido">
+      <Alerta
+        v-if="error"
+      >{{ error }}</Alerta>
 
         <form
           class="formulario"
