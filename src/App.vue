@@ -17,8 +17,10 @@
     criptomoneda: ''
   })
 
+  const cotizacion = ref({})
+
   onMounted(() => {
-    const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD'
+    const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=20&tsym=USD'
     fetch(url)
       .then(respuesta => respuesta.json())
       .then(({Data}) => criptomonedas.value = Data)
@@ -41,7 +43,7 @@
     const respuesta = await fetch(url)
     const data = await respuesta.json()
 
-    console.log(data)
+    cotizacion.value = data.DISPLAY[criptomoneda][moneda]
   }
 
 </script>
