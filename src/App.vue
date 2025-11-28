@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, reactive, onMounted } from "vue";
+  import { ref, reactive, onMounted, computed } from "vue";
   import Alerta from "./components/Alerta.vue";
 
   const monedas = ref([
@@ -45,6 +45,8 @@
 
     cotizacion.value = data.DISPLAY[criptomoneda][moneda]
   }
+
+  const tieneCotizacion = computed(() => Object.values(cotizacion.value).length > 0)
 
 </script>
 
@@ -94,13 +96,13 @@
 
         </form>
 
-        <div class="contenedor-resultado">
+        <div v-if="tieneCotizacion" class="contenedor-resultado">
           <h2>Cotización</h2>
 
           <div class="resultado">
             <img
               :src="'https://cryptocompare.com/' + cotizacion.IMAGEURL"
-              alt="imagen cripto">
+               alt="imagen cripto">
             <div>
               <p>El precio es de: <span>{{ cotizacion.PRICE }}</span></p>
               <p>El precio más alto del día: <span>{{ cotizacion.HIGHDAY }}</span></p>
